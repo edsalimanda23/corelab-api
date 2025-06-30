@@ -1,42 +1,29 @@
-#  Corelab Challenge — Fullstack Project
+## 🚀 **PULL_REQUEST.md — BACKEND (corelab-api)**
 
-## ✅ What was done
-- Complete CRUD for to-do items (create, read, update, delete)
-- Mark/unmark items as favorite (⭐)
-- Assign custom color to each item
-- Favorites displayed at the top of the list
-- Responsive layout on the frontend
-- RESTful API with Node.js + Express + MongoDB Atlas
-- Deployment on Render
+```markdown
+# Backend Pull Request
 
-## ⚙ Technologies
-- **Backend:** Node.js, Express, MongoDB Atlas
-- **Frontend:** React
-- **Deploy:** Render
+## Summary
 
-## 💻 How to run locally
+- Adjusted API to support the simplified frontend features (basic CRUD: create, read, update, delete).
+- No color or favorite-related logic in this version.
+- Prepared structure for future enhancements.
 
-### Backend
+## Future Improvements
+
+- Add endpoints for "mark as favorite" and color customization.
+- Implement data validation on all requests.
+- Add comprehensive error handling.
+- Add unit and integration tests.
+- Add Docker support and CI/CD pipeline.
+- Improve performance and security.
+
+## How to Run Locally
+
 ```bash
 git clone https://github.com/edsalimanda23/corelab-api.git
 cd corelab-api
 npm install
-cp .env.example .env  # configure MONGO_URI and PORT
 npm start
-Frontend
-bash
-Copiar
-Editar
-git clone https://github.com/edsalimanda23/corelab-web.git
-cd corelab-web
-npm install
-npm run dev
-
-
-
-Future improvements
-Add tests
-
-Add CI/CD
-
-Dockerization
+Production URL
+➡ https://corelab-api-1v72.onrender.com
