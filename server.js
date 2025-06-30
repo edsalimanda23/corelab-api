@@ -1,22 +1,29 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
-app.use(express.json());
+
+// Middleware
 app.use(cors());
+app.use(express.json());
 
 // Conectar ao MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('✅ Conectado ao MongoDB'))
-  .catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/corelab';
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('✅ Conectado ao MongoDB'))
+.catch(err => console.error('❌ Erro ao conectar ao MongoDB:', err));
 
-// Modelo exemplo
-const Item = mongoose.model('Item', {
+// Modelo
+const ItemSchema = new mongoose.Schema({
   nome: String,
   descricao: String
 });
+const Item = mongoose.model('Item', ItemSchema);
 
 // Rotas
 app.get('/items', async (req, res) => {
@@ -25,21 +32,36 @@ app.get('/items', async (req, res) => {
 });
 
 app.post('/items', async (req, res) => {
-  const item = new Item(req.body);
-  await item.save();
-  res.status(201).json(item);
+  const novoItem = new Item({
+    nome: req.body.nome,
+    descricao: req.body.descricao
+  });
+  await novoItem.save();
+  res.json(novoItem);
 });
 
 app.put('/items/:id', async (req, res) => {
-  const item = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(item);
+  const itemAtualizado = await Item.findByIdAndUpdate(
+    req.params.id,
+    { nome: req.body.nome, descricao: req.body.descricao },
+    { new: true }
+  );
+  res.json(itemAtualizado);
 });
 
 app.delete('/items/:id', async (req, res) => {
   await Item.findByIdAndDelete(req.params.id);
-  res.status(204).send();
+  res.json({ message: 'Item apagado com sucesso' });
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+// Rota padrão
+app.get('/', (req, res) => {
+  res.send('API Corelab está no ar 🚀');
+});
+
+// Start
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+});
+
